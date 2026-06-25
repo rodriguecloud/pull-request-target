@@ -1,0 +1,21 @@
+name: CI Vulnérable
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Run Build Script
+        env:
+          MY_SECRET: ${{ secrets.FLAG_SECRET }}
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
